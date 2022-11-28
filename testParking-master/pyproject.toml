@@ -2,7 +2,7 @@
 name = "testparking"
 version = "0.1.0"
 description = ""
-authors = ["Чеботарёв Виктор <powersemmi@gmail.com>"]
+authors = ["Баграт Овсепян <bhovsepyan88@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
