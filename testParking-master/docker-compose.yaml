@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U parking -d parking']
+      interval: 5s
+      timeout: 20s
+      retries: 10
+    environment:
+      POSTGRES_USER: parking
+      POSTGRES_DB: parking
+      POSTGRES_PASSWORD: parking
+    ports:
+      - "5432:5432"
+  app:
+    build: .
+    environment:
+      - DEBUG=True
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=parking
+      - DATABASE_USER=parking
+      - DATABASE_PASS=parking
+    env_file:
+      - .env
+    volumes:
+      - static:/static
+    depends_on:
+      db: {condition: service_healthy}
+  nginx:
+    build: ./nginx
+    volumes:
+      - static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  static:
